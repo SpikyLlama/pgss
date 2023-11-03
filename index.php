@@ -49,13 +49,17 @@
         async function populateCurrentRound() {
           try {
             data = await fetch("https://api.picturega.me/current");
-            currentRound = await data.json();
-            const title = currentRound.round.title;
-            const hostName = currentRound.round.hostName;
-            const postUrl = currentRound.round.postUrl;
-            const id = currentRound.round.id;
-            document.getElementById("currentroundtitle").innerHTML = `<a href="https://reddit.com/${id}" target="_blank"><b>${title}</b></a> by <a target="_blank" href="https://picturega.me/dashboard?player=${hostName}"><b>u/${hostName}</b></a>`;
-            document.getElementById("currentroundimage").src = postUrl;
+            currentRound = await data.json().round;
+            const title = currentRound.title;
+            const hostName = currentRound.hostName;
+            const postUrl = currentRound.postUrl;
+            const id = currentRound.id;
+            if (currentRound.winTime) {
+              document.getElementById("currentroundtitle").innerHTML = `The most recent round was solved ${unixTimeDifference(currentRound.plusCorrectTime, Date.now() / 1000)} ago.`;
+              document.getElementById("currentroundimage").src = postUrl;}
+            } else {
+              document.getElementById("currentroundtitle").innerHTML = `<a href="https://reddit.com/${id}" target="_blank"><b>${title}</b></a> by <a target="_blank" href="https://picturega.me/dashboard?player=${hostName}"><b>u/${hostName}</b></a>`;
+              document.getElementById("currentroundimage").src = postUrl;}
             }
           catch(err) {
             console.error(err)
@@ -101,6 +105,13 @@
             }
           });
           document.getElementById("commentbox").value = "";
+        }
+
+        function unixTimeDifference(first, second) {
+          const diff = first - second;
+          const mins = Math.floor(diff / 60);
+          const secs = diff - mins * 60;
+          return `${mins} minutes and ${secs} seconds`;
         }
       </script>
     </body>
