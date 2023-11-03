@@ -45,7 +45,7 @@
             } else {
               document.getElementById("userinfo").style.display = "none";
               const random_string = "test";
-              document.getElementById("redditlogin").innerHTML = `<a href="https://www.reddit.com/api/v1/authorize?client_id=${secrets.client_id}&response_type=code&state=${random_string}&redirect_uri=http://127.0.0.1:5500/finish_login.html&duration=permanent&scope=identity,edit,flair,submit">Log in with Reddit</a>`;
+              document.getElementById("redditlogin").innerHTML = `<a href="https://www.reddit.com/api/v1/authorize?client_id=${<?php echo "CLIENT_ID" ?>}&response_type=code&state=${random_string}&redirect_uri=https://spikyllama.net/pgss/finish_login.php&duration=permanent&scope=identity,edit,flair,submit">Log in with Reddit</a>`;
             };
         }; 
         loginFunc();
@@ -64,11 +64,10 @@
           catch(err) {
             console.error(err)
           }
-
         }
 
         async function logOut() {
-          const credentials = btoa(`${<?php echo CLIENT_ID ?>}:${<?php echo CLIENT_SECRET ?>}`);
+          const credentials = btoa(`${<?php echo "CLIENT_ID" ?>}:${<?php echo "CLIENT_SECRET" ?>}`);
           await fetch('https://www.reddit.com/api/v1/revoke_token', { 
             method: "POST",
             headers: {
