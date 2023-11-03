@@ -22,15 +22,11 @@
         <textarea id="commentbox" value="value"></textarea>
         <br><button id="submitcomment" onclick="submitComment()">Submit answer</button>
       </div>
-      <script src="main.js" type="text/javascript">
+      <script>
         var currentRound;
         var secrets;
 
         async function loginFunc() {
-          await import("./creds.js")
-            .then(response => {
-                secrets = {...response.creds};
-            });
             if (localStorage.getItem("access_token")) {
               var code; 
               const res = await fetch('https://oauth.reddit.com/api/v1/me', { 
@@ -45,7 +41,7 @@
             } else {
               document.getElementById("userinfo").style.display = "none";
               const random_string = "test";
-              document.getElementById("redditlogin").innerHTML = `<a href="https://www.reddit.com/api/v1/authorize?client_id=${<?php echo "CLIENT_ID" ?>}&response_type=code&state=${random_string}&redirect_uri=https://spikyllama.net/pgss/finish_login.php&duration=permanent&scope=identity,edit,flair,submit">Log in with Reddit</a>`;
+              document.getElementById("redditlogin").innerHTML = `<a href="https://www.reddit.com/api/v1/authorize?client_id=<?php echo "MzRgMlET7I_0RUGyxfxEgA" ?>&response_type=code&state=${random_string}&redirect_uri=https://spikyllama.net/pgss/finish_login.php&duration=permanent&scope=identity,edit,flair,submit">Log in with Reddit</a>`;
             };
         }; 
         loginFunc();
@@ -67,7 +63,7 @@
         }
 
         async function logOut() {
-          const credentials = btoa(`${<?php echo "CLIENT_ID" ?>}:${<?php echo "CLIENT_SECRET" ?>}`);
+          const credentials = btoa(`<?php echo "MzRgMlET7I_0RUGyxfxEgA" ?>:<?php echo "CLIENT_SECRET" ?>`);
           await fetch('https://www.reddit.com/api/v1/revoke_token', { 
             method: "POST",
             headers: {
@@ -84,7 +80,7 @@
           });
           localStorage.removeItem("access_token");
           localStorage.removeItem("refresh_token");
-          window.location.replace("index.html");
+          window.location.replace("index.php");
         }
 
         async function submitComment() {
@@ -95,8 +91,7 @@
               "Content-Type": "application/x-www-form-urlencoded",
               "Authorization": `Bearer ${localStorage.getItem("access_token")}`
             },
-            //body: `thing_id=t3_${currentRound.round.id}&text=${document.getElementById("commentbox").value}&api_type=json`
-            body: `thing_id=t3_17n14ne&text=${document.getElementById("commentbox").value}&api_type=json`
+            body: `thing_id=t3_${currentRound.round.id}&text=${document.getElementById("commentbox").value}&api_type=json`
           }).then(response => {
             if (response.ok) {
               console.log('Comment posted successfully.');
