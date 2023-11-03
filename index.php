@@ -56,7 +56,7 @@
             const id = currentRound.id;
             if (currentRound.winTime) {
               document.getElementById("currentroundtitle").innerHTML = `The most recent round was solved ${unixTimeDifference(currentRound.plusCorrectTime, Date.now() / 1000)} ago.`;
-              document.getElementById("currentroundimage").src = postUrl;}
+              document.getElementById("currentroundimage").src = postUrl;
             } else {
               document.getElementById("currentroundtitle").innerHTML = `<a href="https://reddit.com/${id}" target="_blank"><b>${title}</b></a> by <a target="_blank" href="https://picturega.me/dashboard?player=${hostName}"><b>u/${hostName}</b></a>`;
               document.getElementById("currentroundimage").src = postUrl;}
