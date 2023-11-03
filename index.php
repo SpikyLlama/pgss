@@ -49,10 +49,10 @@
         async function populateCurrentRound() {
           try {
             data = await fetch("https://api.picturega.me/current");
-            currentRound = await data.json().round;
-            const title = currentRound.title;
-            const hostName = currentRound.hostName;
-            const postUrl = currentRound.postUrl;
+            currentRound = await data.json();
+            const title = currentRound.round.title;
+            const hostName = currentRound.round.hostName;
+            const postUrl = currentRound.round.postUrl;
             const id = currentRound.id;
             if (currentRound.winTime) {
               document.getElementById("currentroundtitle").innerHTML = `The most recent round was solved ${unixTimeDifference(currentRound.plusCorrectTime, Date.now() / 1000)} ago.`;
