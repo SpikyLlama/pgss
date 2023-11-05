@@ -63,7 +63,7 @@
               document.getElementById("currentroundimage").src = postUrl;
             }
             if ((Date.now() / 1000 - localStorage.getItem("last_refreshed")) > 3000) {
-              const credentials = btoa(`<?php echo "MzRgMlET7I_0RUGyxfxEgA" ?>:<?php echo "CLIENT_SECRET" ?>`);
+              const credentials = btoa(`MzRgMlET7I_0RUGyxfxEgA:<?php echo "CLIENT_SECRET" ?>`);
               const form = new URLSearchParams({
                 grant_type: "refresh_token",
                 refresh_token: localStorage.getItem("refresh_token"),
@@ -85,7 +85,7 @@
         }
 
         async function logOut() {
-          const credentials = btoa(`<?php echo "MzRgMlET7I_0RUGyxfxEgA" ?>:<?php echo "CLIENT_SECRET" ?>`);
+          const credentials = btoa(`MzRgMlET7I_0RUGyxfxEgA:<?php echo "CLIENT_SECRET" ?>`);
           await fetch('https://www.reddit.com/api/v1/revoke_token', { 
             method: "POST",
             headers: {

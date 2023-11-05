@@ -11,7 +11,7 @@
         code: code,
         redirect_uri: "https://spikyllama.net/pgss/finish_login.php"
       });
-      const credentials = btoa(`<?php echo "MzRgMlET7I_0RUGyxfxEgA" ?>:<?php echo "CLIENT_SECRET" ?>`);
+      const credentials = btoa(`MzRgMlET7I_0RUGyxfxEgA:<?php echo "CLIENT_SECRET" ?>`);
       const res = await fetch('https://www.reddit.com/api/v1/access_token', { 
         method: "POST",
         headers: {
