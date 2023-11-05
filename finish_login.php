@@ -22,6 +22,7 @@
       const result = await res.json();
       localStorage.setItem("access_token", result.access_token);
       localStorage.setItem("refresh_token", result.refresh_token);
+      localStorage.setItem("last_refreshed", Date.now() / 1000);
       window.location.replace("index.php");
     };
     finish_login();

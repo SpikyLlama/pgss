@@ -7,7 +7,8 @@
     <header>
       <div id="userinfo">
         <img id="infosnoo" src="" /><p id="infousername">&nbsp;</p>&nbsp;
-        <a href="javascript:logOut()" id="infologout">Log out</a>
+        <a href="javascript:logOut()" id="infologout">| Log out</a>
+        <a href="javascript:populateCurrentRound()" id="inforefresh"> | Refresh </a>
       </div>
       <div id="redditlogin">
       </div>
@@ -41,7 +42,7 @@
             } else {
               document.getElementById("userinfo").style.display = "none";
               const random_string = "test";
-              document.getElementById("redditlogin").innerHTML = `<a href="https://www.reddit.com/api/v1/authorize?client_id=<?php echo "MzRgMlET7I_0RUGyxfxEgA" ?>&response_type=code&state=${random_string}&redirect_uri=https://spikyllama.net/pgss/finish_login.php&duration=permanent&scope=identity,edit,flair,submit">Log in with Reddit</a>`;
+              document.getElementById("redditlogin").innerHTML = `<a href="https://www.reddit.com/api/v1/authorize?client_id=MzRgMlET7I_0RUGyxfxEgA&response_type=code&state=${random_string}&redirect_uri=https://spikyllama.net/pgss/finish_login.php&duration=permanent&scope=identity,edit,flair,submit">Log in with Reddit</a>`;
             };
         }; 
         loginFunc();
@@ -53,15 +54,32 @@
             const title = currentRound.round.title;
             const hostName = currentRound.round.hostName;
             const postUrl = currentRound.round.postUrl;
-            const id = currentRound.id;
+            const id = currentRound.round.id;
             if (currentRound.winTime) {
               document.getElementById("currentroundtitle").innerHTML = `The most recent round was solved ${unixTimeDifference(currentRound.plusCorrectTime, Date.now() / 1000)} ago.`;
               document.getElementById("currentroundimage").src = postUrl;
             } else {
               document.getElementById("currentroundtitle").innerHTML = `<a href="https://reddit.com/${id}" target="_blank"><b>${title}</b></a> by <a target="_blank" href="https://picturega.me/dashboard?player=${hostName}"><b>u/${hostName}</b></a>`;
-              document.getElementById("currentroundimage").src = postUrl;}
+              document.getElementById("currentroundimage").src = postUrl;
             }
-          catch(err) {
+            if ((Date.now() / 1000 - localStorage.getItem("last_refreshed")) > 3000) {
+              const credentials = btoa(`<?php echo "MzRgMlET7I_0RUGyxfxEgA" ?>:<?php echo "CLIENT_SECRET" ?>`);
+              const form = new URLSearchParams({
+                grant_type: "refresh_token",
+                refresh_token: localStorage.getItem("refresh_token"),
+              });
+              const res = await fetch('https://www.reddit.com/api/v1/access_token', { 
+                method: "POST",
+                headers: {
+                  Authorization: `Basic ${credentials}`
+                },
+                body: form
+              });
+              const result = await res.json();
+              localStorage.setItem("access_token", result.access_token);
+              localStorage.setItem("last_refreshed", Date.now() / 1000);
+            }
+          } catch(err) {
             console.error(err)
           }
         }

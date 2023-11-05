@@ -2,7 +2,7 @@
   font-family: "Inter";
   src:
     local("Inter"),
-    url("./assets/fonts/Inter-VariableFont_slnt,wght.ttf") format("truetype");
+    url("./assets/fonts/Inter.ttf") format("truetype");
 }
 
 :root {
